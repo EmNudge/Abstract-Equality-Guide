@@ -1,7 +1,7 @@
 import { writable, derived } from 'svelte/store';
 import type { Writable, Readable } from 'svelte/store';
 
-import { emptyGenerator, empty, stringify, debounce } from './utils';
+import { emptyGenerator, empty, stringify, debounce, evaluateExpression } from './utils';
 
 import { getSteps } from './steps/stepThrough';
 import { stepTree } from './steps/stepTree';
@@ -51,27 +51,71 @@ lastEvent.subscribe(event => {
 
 export const stepArr: Writable<number[]> = writable([]);
 
-// values which influence the iterable when changed
-export const xValue: Writable<any> = writable(empty);
-export const yValue: Writable<any> = writable(empty);
-
-export const values: Readable<{ x: any, y: any }> = derived([xValue, yValue], ([x, y]) => ({ x, y }));
-export const iterTrigger: Writable<any> = writable(null);
-export const stepIter: Readable<Generator<EqStep, boolean, never>> = derived([values, iterTrigger], ([{ x, y }]) => {
-  if (x === empty || y === empty) {
-    iterIsExhausted.set(true);
-    return emptyGenerator;
-  }
-
-  iterIsExhausted.set(false);
-  return getSteps(stepTree, x, y);
-});
-
 export const xText: Writable<string> = writable('');
 export const yText: Writable<string> = writable('');
-export const urlFragment: Readable<string> = derived([xText, yText], (arr) => JSON.stringify(arr));
+
+// take text and retrieve value by using new Function()
+function getValFromString(text: string, set: (value: any) => void) {
+  if (!text) {
+    set(empty)
+    return;
+  }
+
+  evaluateExpression(
+    text,
+    set,
+    () => set(empty)
+  );
+}
+
+
+export const xValue: Readable<any> = derived(xText, getValFromString);
+export const yValue: Readable<any> = derived(yText, getValFromString);
+
+export const iterTrigger: Writable<any> = writable(null);
+export const stepIter: Readable<Generator<EqStep, boolean, never>> = derived(
+  [xValue, yValue, iterTrigger], 
+  ([x, y]) => {
+    if (x === empty || y === empty) {
+      iterIsExhausted.set(true);
+      return emptyGenerator;
+    }
+
+    iterIsExhausted.set(false);
+    return getSteps(stepTree, x, y);
+  }
+);
+
+export const urlFragment: Readable<string> = derived(
+  [xText, yText, xValue, yValue], 
+  ([x, y, xVal, yVal]) => {
+    if (xVal === empty || yVal === empty) return '';
+    return JSON.stringify([x, y]);
+  }
+);
+
+let hashChecked = false;
+function checkHashForData() {
+  const hash = window.location.hash.slice(1);
+  hashChecked = true;
+
+  if (!hash) return;
+  try {
+    const arr = JSON.parse(`[${decodeURI(hash)}]`);
+    // if not an array of 2 strings, exit
+    if (arr.length !== 2) return;
+    if (arr.some((text: any) => typeof text !== 'string')) return;
+    
+    const [x, y] = arr;
+    xText.set(x);
+    yText.set(y);
+  } catch(e) {}
+}
+checkHashForData()
 
 const updateHash = debounce((fragment: string) => {
+  // do not update hash until we have verified it is safe to do so
+  if (!hashChecked) return;
   window.location.hash = fragment.slice(1, -1);
 }, 500);
 urlFragment.subscribe(updateHash);

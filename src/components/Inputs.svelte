@@ -15,13 +15,13 @@
   <ExprInput 
     placeholder="x value" 
     bind:text={$xText}
-    on:express={e => $xValue = e.detail.value} 
+    value={$xValue}
   />
   <span>==</span>
   <ExprInput 
     placeholder="y value" 
     bind:text={$yText}
-    on:express={e => $yValue = e.detail.value} 
+    value={$yValue}
   />
   <input type="submit">
 </form>
