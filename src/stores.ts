@@ -76,7 +76,7 @@ export const iterTrigger: Writable<any> = writable(null);
 export const stepIter: Readable<Generator<EqStep, boolean, never>> = derived(
   [xValue, yValue, iterTrigger], 
   ([x, y]) => {
-    if (x === empty || y === empty) {
+    if ([empty, document.all].some(type => [x, y].includes(type))) {
       iterIsExhausted.set(true);
       return emptyGenerator;
     }
