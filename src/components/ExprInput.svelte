@@ -6,13 +6,13 @@
 	const dispatch = createEventDispatcher();
 
   export let placeholder = "value";
+  export let text = '';
 
-  let item: string = '';
   let errText = '';
   
   function handleText() {
     evaluateExpression(
-      item, 
+      text, 
       expr => {
         if (expr === document.all) {
           errText = 'please don\'t put that there ☹';
@@ -34,7 +34,7 @@
 </script>
 
 <div class="input">
-  <input type="text" spellcheck={false} {placeholder} bind:value={item} on:input={handleText}>
+  <input type="text" spellcheck={false} {placeholder} bind:value={text} on:input={handleText}>
   <div class="error">{errText}</div>
 </div>
 

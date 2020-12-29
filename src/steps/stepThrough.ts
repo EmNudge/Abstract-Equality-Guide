@@ -1,5 +1,6 @@
 import { stepTree } from './stepTree';
 import type { Step } from './stepTree'
+import { keepLast } from '../utils';
 
 export function* getSteps(steps: Iterable<Step> | Step[], x: any, y: any, stepArr = []): Generator<Event, boolean | Error> {
   let i = 0;
@@ -47,31 +48,3 @@ export interface Event {
   x: any;
   y: any;
 };
-
-// utility function to hold last value of a generator
-function keepLast<T, U, V>(iter: Generator<T, U, V>): Generator<T, U, V> {
-  let lastValue: IteratorResult<T, U> = null;
-
-  const newIter = {
-    next(value: V) {
-      // keep returning last value if done
-      if (lastValue && lastValue.done) return lastValue;
-
-      const val = iter.next(value);
-      if (val.done) lastValue = val;
-      return val;
-    },
-    [Symbol.iterator]() { 
-      return newIter; 
-    },
-    return(value: U): IteratorResult<T, U> {
-      lastValue.done = true;
-      return iter.return(value);
-    },
-    throw(value: V) {
-      return iter.throw(value);
-    }
-  };
-
-  return newIter;
-}

@@ -1,6 +1,9 @@
 <script lang="ts">
   import ExprInput from './ExprInput.svelte';
-  import { xValue, yValue, iterIsExhausted, stepIter, lastEvent } from '../stores';
+  import { 
+    xValue, yValue, xText, yText, 
+    iterIsExhausted, stepIter, lastEvent 
+  } from '../stores';
 
   function handleSubmit() {
     if ($iterIsExhausted) return;
@@ -9,9 +12,17 @@
 </script>
 
 <form class="inputs" on:submit|preventDefault={handleSubmit}>
-  <ExprInput placeholder="x value" on:express={e => $xValue = e.detail.value} />
+  <ExprInput 
+    placeholder="x value" 
+    bind:text={$xText}
+    on:express={e => $xValue = e.detail.value} 
+  />
   <span>==</span>
-  <ExprInput placeholder="y value" on:express={e => $yValue = e.detail.value} />
+  <ExprInput 
+    placeholder="y value" 
+    bind:text={$yText}
+    on:express={e => $yValue = e.detail.value} 
+  />
   <input type="submit">
 </form>
 

@@ -1,9 +1,7 @@
-import { writable, derived, get  } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 import type { Writable, Readable } from 'svelte/store';
 
-import { emptyGenerator } from './utils/generator';
-import { empty } from './utils/empty'
-import { stringify } from './utils/stringify';
+import { emptyGenerator, empty, stringify, debounce } from './utils';
 
 import { getSteps } from './steps/stepThrough';
 import { stepTree } from './steps/stepTree';
@@ -68,3 +66,12 @@ export const stepIter: Readable<Generator<EqStep, boolean, never>> = derived([va
   iterIsExhausted.set(false);
   return getSteps(stepTree, x, y);
 });
+
+export const xText: Writable<string> = writable('');
+export const yText: Writable<string> = writable('');
+export const urlFragment: Readable<string> = derived([xText, yText], (arr) => JSON.stringify(arr));
+
+const updateHash = debounce((fragment: string) => {
+  window.location.hash = fragment.slice(1, -1);
+}, 500);
+urlFragment.subscribe(updateHash);
