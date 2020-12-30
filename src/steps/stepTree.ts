@@ -5,6 +5,12 @@ function getType(val: any) {
   if (type === 'function') return 'object';
   return type;
 }
+function isType(type: typeofType | typeofType[], item: any) {
+  const itemType = getType(item);
+  if (typeof type === 'string') return itemType === type;
+
+  return type.includes(itemType);
+}
 
 const True = () => true;
 const False = () => false;
@@ -18,8 +24,11 @@ export interface Step {
 
 type typeofType = "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "null";
 
-const isType = (type1: typeofType, type2: typeofType) => 
-  (x: any, y: any) => getType(x) === type1 && getType(y) === type2;
+const areTypes = (type1: typeofType | typeofType[], type2: typeofType | typeofType[]) => 
+  (x: any, y: any) => isType(type1, x) && isType(type2, y);
+
+const are = (item1: any, item2: any) => 
+  (x: any, y: any) => Object.is(item1, x) && Object.is(item2, y);
 
 export const stepTree: Step[] = [
   {
@@ -27,23 +36,23 @@ export const stepTree: Step[] = [
     do: (x, y) => x === y,
   },
   {
-    cond: isType('null', 'undefined'),
+    cond: are(null, undefined),
     do: True,
   },
   {
-    cond: isType('undefined', 'null'),
+    cond: are(undefined, null),
     do: True,
   },
   {
-    cond: isType('number', 'string'),
+    cond: areTypes('number', 'string'),
     do: (x, y) => ({ x, y: Number(y) }),
   },
   {
-    cond: isType('string', 'number'),
+    cond: areTypes('string', 'number'),
     do: (x, y) => ({ x: Number(x), y }),
   },
   {
-    cond: isType('bigint', 'string'),
+    cond: areTypes('bigint', 'string'),
     do: [
       {
         cond: (_x, y) => {
@@ -71,7 +80,7 @@ export const stepTree: Step[] = [
     ],
   },
   {
-    cond: isType('string', 'bigint'),
+    cond: areTypes('string', 'bigint'),
     do: (x, y) => ({ x: y, y: x }),
   },
   {
@@ -83,15 +92,17 @@ export const stepTree: Step[] = [
     do: (x, y) => ({ x, y: Number(y) }),
   },
   {
-    cond: (x, y) => ['string', 'number', 'bigint', 'symbol'].includes(getType(x)) && getType(y) === 'object',
+    cond: areTypes(['string', 'number', 'bigint', 'symbol'], 'object'),
     do: (x, y) => ({ x, y: toPrimitive(y) }),
   },
   {
-    cond: (x, y) => getType(x) === 'object' && ['string', 'number', 'bigint', 'symbol'].includes(getType(y)),
+    cond: areTypes('object', ['string', 'number', 'bigint', 'symbol']),
     do: (x, y) => ({ x: toPrimitive(x), y }),
   },
   {
-    cond: (x, y) => ['number', 'bigint'].includes(getType(x)) && ['number', 'bigint'].includes(getType(y)),
+    // if they were the same type this exits on step 1, so by this point they must be different
+    // i.e. this checks for number==bigint or bigint==number
+    cond: areTypes(['number', 'bigint'], ['number', 'bigint']),
     do: [
       {
         cond: (x, y) => {
@@ -116,27 +127,25 @@ export const stepTree: Step[] = [
   },
 ];
 
-const hasFunc = (obj: object) => (prop: keyof never) => 
-  typeof obj[prop] === 'function';
-const isObj = (val: any) => 
-  ['object', 'function'].includes(typeof val);
+const isCallable = (obj: object, prop: any) => typeof obj[prop] === 'function';
+
+const isObject = (val: any) => ['object', 'function'].includes(typeof val);
 
 function toPrimitive(obj: object) {
-  const has = hasFunc(obj);
-
-  if (has(Symbol.toPrimitive)) {
+  if (isCallable(obj, Symbol.toPrimitive)) {
     const val = obj[Symbol.toPrimitive]('default');
-    if (isObj(val)) {
+    if (isObject(val)) {
       throw new TypeError('Cannot convert object to primitive value');
     }
+    
     return val;
   }
 
   let val: any = obj;
-  if (has('valueOf')) val = obj.valueOf();
-  if (isObj(val) && has('toString')) val = obj.toString();
-  
-  if (isObj(val)) {
+  if (isCallable(obj, 'valueOf')) val = obj.valueOf();
+  if (isObject(val) && isCallable(obj, 'toString')) val = obj.toString();
+
+  if (isObject(val)) {
     throw new TypeError('Cannot convert object to primitive value');
   }
 
