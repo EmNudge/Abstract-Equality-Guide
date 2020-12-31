@@ -3,7 +3,11 @@
 	import Buttons from './components/Buttons.svelte';
 	import EventHolder from './components/EventHolder.svelte';
 	import Steps from './components/Steps.svelte';
+
+	import GithubIcon from './icons/Github.svelte';
 </script>
+
+<GithubIcon href="https://github.com/EmNudge/Abstract-Equality-Guide" />
 
 <main>
 	<Inputs />
