@@ -12,6 +12,10 @@ body {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
+:root {
+	--highlight-color: #ffff0069;
+}
+
 a {
 	color: rgb(0,100,200);
 	text-decoration: none;
@@ -68,4 +72,11 @@ code {
 	color: #EB5757;
 	padding: 2px 8px;
 	border-radius: 2px;
+}
+
+code var {
+	cursor: pointer;
+}
+code var:hover {
+	text-decoration: underline;
 }
