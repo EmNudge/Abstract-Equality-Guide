@@ -4,28 +4,31 @@
 
   import { stepArr } from '../stores';
 
-  const X_COLOR = 'var.token-x { background: var(--highlight-color); }';
-  const Y_COLOR = 'var.token-y { background: var(--highlight-color); }';
-  let currColor = '';
-  $: style = `<style>${currColor}</style>`;
+  enum Color {
+    x = 'x',
+    y = 'y',
+    none = '',
+  }
+  let currColor: Color = Color.none;
+  $: style = currColor === '' 
+    ? `<style></style>` 
+    : `
+      <style>
+        var.token-${currColor} {
+          background: var(--highlight-color);
+        }
+      </style>
+    `;
 
-  function handleClick(e) {
+  function handleClick(e: MouseEvent) {
+    if (!(e.target instanceof HTMLElement)) return;
     const { className } = e.target;
     if (!className.includes('token')) return;
 
-    if (className.includes('-x')) {
-      if (currColor === X_COLOR) {
-        currColor = '';
-      } else {
-        currColor = X_COLOR;
-      }
-    } else {
-      if (currColor === Y_COLOR) {
-        currColor = '';
-      } else {
-        currColor = Y_COLOR;
-      }
-    }
+    const classColor: Color = className.slice(-1) as Color;
+    currColor = classColor === currColor 
+      ? Color.none 
+      : classColor;
   }
 </script>
 
