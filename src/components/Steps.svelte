@@ -34,7 +34,7 @@
 
 {@html style}
 
-<ol on:click={handleClick} {style}>
+<ol on:click={handleClick}>
   {#each steps as step, i}
     <Step {step} stepArr={$stepArr} index={i} />
   {/each}
