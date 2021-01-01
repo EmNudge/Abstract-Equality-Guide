@@ -112,7 +112,7 @@ export const stepTree: Step[] = [
         do: False,
       },
       {
-        cond: (x, y) => x === BigInt(y),
+        cond: (x, y) => x === BigInt(y) || BigInt(x) == y,
         do: True,
       },
       {
@@ -136,7 +136,7 @@ const isPrimitive = (val: any) =>
 
 // return object or primitive or error if no methods exist
 function toPrimitive<T extends Record<any, unknown>>(obj: T): any {
-  // shouldn't happen due to TS, but the spec does this
+  // shouldn't happen due to NTS, but the spec does this
   if (isPrimitive(obj)) return obj;
 
   // try calling it if it isn't undefined or null
