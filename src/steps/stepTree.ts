@@ -127,27 +127,43 @@ export const stepTree: Step[] = [
   },
 ];
 
+// https://www.ecma-international.org/ecma-262/11.0/index.html#sec-toprimitive
+
 const isCallable = (obj: object, prop: any) => typeof obj[prop] === 'function';
 
-const isObject = (val: any) => ['object', 'function'].includes(typeof val);
+const isPrimitive = (val: any) =>
+  val === null || !['object', 'function'].includes(typeof val);
 
-function toPrimitive(obj: object) {
-  if (isCallable(obj, Symbol.toPrimitive)) {
-    const val = obj[Symbol.toPrimitive]('default');
-    if (isObject(val)) {
-      throw new TypeError('Cannot convert object to primitive value');
+// return object or primitive or error if no methods exist
+function toPrimitive<T extends Record<any, unknown>>(obj: T): any {
+  // shouldn't happen due to TS, but the spec does this
+  if (isPrimitive(obj)) return obj;
+
+  // try calling it if it isn't undefined or null
+  // @ts-ignore
+  if (obj[Symbol.toPrimitive] != null) {
+    if (!isCallable(obj, Symbol.toPrimitive)) {
+      // note the real error often includes a little bit more info about the type
+      // @ts-ignore
+      throw new TypeError(`${obj[Symbol.toPrimitive]} is not a function`)
     }
-    
-    return val;
-  }
 
-  let val: any = obj;
-  if (isCallable(obj, 'valueOf')) val = obj.valueOf();
-  if (isObject(val) && isCallable(obj, 'toString')) val = obj.toString();
+    // @ts-ignore
+    const val = obj[Symbol.toPrimitive]('default');
 
-  if (isObject(val)) {
+    if (isPrimitive(val)) return val;
+
     throw new TypeError('Cannot convert object to primitive value');
   }
 
-  return val;
+  for (const methodName of ['valueOf', 'toString']) {
+    if (!isCallable(obj, methodName)) continue;
+
+    // @ts-ignore
+    const val = obj[methodName]();
+    if (isPrimitive(val)) return val;
+  }
+
+  // if the callable methods only returned objects
+  throw new TypeError('Cannot convert object to primitive value');
 }
