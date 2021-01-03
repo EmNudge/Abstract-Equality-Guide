@@ -5,7 +5,7 @@ import type { Writable } from 'svelte/store';
 // One with toJSON() and one that can be parsed back
 export function writableFromStorage<T>(startingValue: T, name: string): Writable<T> {
   const item = localStorage.getItem(name);
-  const startVal = item ? startingValue : JSON.parse(item);
+  const startVal = item ? JSON.parse(item) : startingValue;
   
   const store = writable(startVal);
   store.subscribe(val => {
