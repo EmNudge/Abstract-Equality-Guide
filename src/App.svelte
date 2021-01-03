@@ -3,9 +3,16 @@
 	import Buttons from './components/Buttons.svelte';
 	import EventHolder from './components/EventHolder.svelte';
 	import Steps from './components/Steps.svelte';
+	import SettingsMenu from './components/Settings.svelte';
 
 	import GithubIcon from './icons/Github.svelte';
+
+	import { settingsMenuOpen } from './stores'
 </script>
+
+{#if $settingsMenuOpen}
+	<SettingsMenu />
+{/if}
 
 <GithubIcon href="https://github.com/EmNudge/Abstract-Equality-Guide" />
 
