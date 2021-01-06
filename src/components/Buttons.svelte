@@ -9,6 +9,7 @@
   let timeoutId: number;
   function stopTimeout() {
     clearTimeout(timeoutId);
+    timeoutId = null;
   }
 
   function startAutoStep() {
@@ -16,7 +17,6 @@
       $lastEvent = $stepIter.next();
       if ($lastEvent.done) {
         stopTimeout();
-        timeoutId = null;
         return;
       }
       
@@ -31,7 +31,6 @@
 
   function clear() {
     stopTimeout();
-    timeoutId = null;
 
     $events = [];
     $iterTrigger = Symbol();
@@ -48,10 +47,12 @@
 >Restart</button>
 
 {#if $autoStepper}
-  {#if !timeoutId}
+  {#if timeoutId}
+    <button on:click={stopTimeout}>Pause AutoStep</button>
+  {:else if $lastEvent?.done}
     <button on:click={startAutoStep}>Start AutoStep</button>
   {:else}
-    <button on:click={stopTimeout}>Pause AutoStep</button>
+    <button on:click={startAutoStep}>Continue AutoStep</button>
   {/if}
 {:else}
   <button 
