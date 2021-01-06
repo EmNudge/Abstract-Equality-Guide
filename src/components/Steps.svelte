@@ -1,7 +1,7 @@
 <script lang="ts">
   import { steps } from './steps';
   import Step from './Step.svelte';
-
+  import { dedent } from '../utils';
   import { stepArr } from '../stores';
 
   enum Color {
@@ -12,13 +12,13 @@
   let currColor: Color = Color.none;
   $: style = currColor === '' 
     ? `<style></style>` 
-    : `
+    : dedent(`
       <style>
         var.token-${currColor} {
           background: var(--highlight-color);
         }
       </style>
-    `;
+    `);
 
   function handleClick(e: MouseEvent) {
     if (!(e.target instanceof HTMLElement)) return;
