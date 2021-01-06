@@ -4,7 +4,7 @@
   import { events } from '../stores';
 </script>
 
-<div>
+<div class="holder">
   {#each $events as event}
     <div class="step" in:fly={{y: -20}} 
       class:final={typeof event === 'boolean' || event instanceof Error}
@@ -24,6 +24,9 @@
 </div>
 
 <style>
+  .holder {
+    overflow: auto;
+  }
   .step {
     padding: 5px;
     margin: 5px;

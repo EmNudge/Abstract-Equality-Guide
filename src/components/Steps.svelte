@@ -34,17 +34,19 @@
 
 {@html style}
 
-<ol on:click={handleClick}>
+<ol on:click={handleClick} class="steps-holder">
   {#each steps as step, i}
     <Step {step} stepArr={$stepArr} index={i} />
   {/each}
 </ol>
 
 <style>
-  ol {
+  .steps-holder {
     font-family: Cambria, Palatino Linotype, Palatino, Liberation Serif, serif;
     line-height: 1.5em;
     font-size: 18px;
+    margin-top: 0;
+    overflow: auto;
   }
   ol :global(ol) {
     list-style: lower-alpha;

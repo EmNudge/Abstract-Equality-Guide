@@ -16,24 +16,21 @@
 
 <GithubIcon href="https://github.com/EmNudge/Abstract-Equality-Guide" />
 
-<main>
+<header>
 	<Inputs />
 	<Buttons />
-	
-	<div>
-		<EventHolder />
-		<Steps />
-	</div>
+</header>
+
+<main>
+	<EventHolder />
+	<Steps />
 </main>
 
 <style>
 	main {
-		max-width: 1200px;
-		margin: 0 auto;
-	}
-	div {
 		display: grid;
 		grid-template-columns: 1fr 3fr;
 		grid-gap: 10px;
+		overflow: auto;
 	}
 </style>
