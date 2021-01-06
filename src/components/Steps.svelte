@@ -61,4 +61,7 @@
     padding: 2px 8px;
     border-radius: 2px;
   }
+  ol :global(a) {
+    color: inherit;
+  }
 </style>

@@ -68,13 +68,13 @@ export const steps: Step[] = [
   { 
     name: "If `Type(x)` is either `String`, `Number`, `BigInt`, or `Symbol` and `Type(y)` is `Object`, then",
     substeps: [
-      { name: "Return the result of the comparison `x == ToPrimitive(y)`." }
+      { name: "Return the result of the comparison `x == [ToPrimitive](https://jsitor.com/5ktE3jQzt8)(y)`." }
     ]
   },
   { 
     name: "If `Type(x)` is `Object` and `Type(y)` is either `String`, `Number`, `BigInt`, or `Symbol`, then",
     substeps: [
-      { name: "Return the result of the comparison `ToPrimitive(x) == y`." }
+      { name: "Return the result of the comparison `[ToPrimitive](https://jsitor.com/5ktE3jQzt8)(x) == y`." }
     ]
   },
   { 
