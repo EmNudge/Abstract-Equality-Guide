@@ -43,6 +43,9 @@
 		main {
 			display: block;
 		}
+		header div {
+			margin-right: 40px;
+		}
 	}
 	header div {
 		display: flex;

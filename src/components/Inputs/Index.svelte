@@ -35,6 +35,11 @@
     
     max-width: 600px;
   }
+  @media screen and (max-width: 650px) {
+    .inputs :global(input) {
+      width: 100%;
+    }
+  }
   span {
     padding-bottom: 10px;
   }
