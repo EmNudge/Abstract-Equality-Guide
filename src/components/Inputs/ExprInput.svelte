@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { empty } from '../utils/empty'
+  import { empty } from '../../utils/empty'
 
   export let placeholder = "value";
   export let text = '';

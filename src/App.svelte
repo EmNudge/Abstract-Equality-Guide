@@ -1,6 +1,8 @@
 <script lang="ts">
-	import Inputs from './components/Inputs.svelte';
-	import Buttons from './components/Buttons.svelte';
+	import Inputs from './components/Inputs/Index.svelte';
+	import StartStopButtons from './components/Buttons/StartStop.svelte';
+	import SettingsButton from './components/Buttons/Settings.svelte';
+
 	import EventHolder from './components/EventHolder.svelte';
 	import Steps from './components/Steps.svelte';
 	import SettingsMenu from './components/Settings.svelte';
@@ -17,8 +19,12 @@
 <GithubIcon href="https://github.com/EmNudge/Abstract-Equality-Guide" />
 
 <header>
-	<Inputs />
-	<Buttons />
+	<div>
+		<Inputs />
+		<SettingsButton />
+	</div>
+
+	<StartStopButtons />
 </header>
 
 <main>
@@ -32,5 +38,10 @@
 		grid-template-columns: 1fr 3fr;
 		grid-gap: 10px;
 		overflow: auto;
+	}
+	header div {
+		display: flex;
+		grid: 10px;
+    justify-content: center;
 	}
 </style>
