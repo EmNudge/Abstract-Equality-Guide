@@ -40,6 +40,8 @@
     height: 500px;
     padding: 20px;
     border-radius: 8px;
+    box-sizing: border-box;
+    
     box-shadow: 
       1px 2px 9px 1px #000000ab, 
       0px 0px 20px 20px #00000021;
@@ -54,6 +56,9 @@
 
     display: grid;
     place-items: center;
+
+    padding: 20px;
+    box-sizing: border-box;
   }
 
   .inputs {
