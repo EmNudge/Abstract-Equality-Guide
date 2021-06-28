@@ -36,7 +36,7 @@
 
   .menu {
     background: white;
-    width: 500px;
+    width: max(500px, 100%);
     height: 500px;
     padding: 20px;
     border-radius: 8px;

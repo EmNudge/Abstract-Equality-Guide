@@ -27,6 +27,11 @@
   .holder {
     overflow: auto;
   }
+  @media screen and (max-width: 1000px) {
+		.holder {
+			display: none;
+		}
+	}
   .step {
     padding: 5px;
     margin: 5px;

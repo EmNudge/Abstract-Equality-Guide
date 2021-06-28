@@ -4,7 +4,7 @@
 	import SettingsButton from './components/Buttons/Settings.svelte';
 
 	import EventHolder from './components/EventHolder.svelte';
-	import Steps from './components/Steps.svelte';
+	import Steps from './components/Steps/Index.svelte';
 	import SettingsMenu from './components/Settings.svelte';
 
 	import GithubIcon from './icons/Github.svelte';
@@ -38,6 +38,11 @@
 		grid-template-columns: 1fr 3fr;
 		grid-gap: 10px;
 		overflow: auto;
+	}
+	@media screen and (max-width: 1000px) {
+		main {
+			display: block;
+		}
 	}
 	header div {
 		display: flex;

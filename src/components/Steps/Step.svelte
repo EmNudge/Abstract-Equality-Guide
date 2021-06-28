@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Step } from './steps';
-  import { parse } from '../utils/parsemd';
+  import { parse } from '../../utils/parsemd';
 
   export let step: Step;
   export let index: number;
