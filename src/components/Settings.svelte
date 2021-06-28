@@ -36,12 +36,11 @@
 
   .menu {
     background: white;
-    width: max(500px, 100%);
-    height: 500px;
+    width: min(600px, 100%);
+    height: 300px;
     padding: 20px;
     border-radius: 8px;
     box-sizing: border-box;
-    
     box-shadow: 
       1px 2px 9px 1px #000000ab, 
       0px 0px 20px 20px #00000021;
