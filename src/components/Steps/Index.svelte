@@ -34,6 +34,7 @@
 
 {@html style}
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <ol on:click={handleClick} class="steps-holder">
   {#each steps as step, i}
     <Step {step} stepArr={$stepArr} index={i} />

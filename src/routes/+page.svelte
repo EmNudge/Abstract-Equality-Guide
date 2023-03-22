@@ -1,27 +1,18 @@
 <script lang="ts">
 	import Inputs from '../components/Inputs/Index.svelte';
 	import StartStopButtons from '../components/Buttons/StartStop.svelte';
-	import SettingsButton from '../components/Buttons/Settings.svelte';
 
 	import EventHolder from '../components/EventHolder.svelte';
 	import Steps from '../components/Steps/Index.svelte';
-	import SettingsMenu from '../components/Settings.svelte';
 
 	import GithubIcon from '../icons/Github.svelte';
-
-	import { settingsMenuOpen } from '../stores'
 </script>
-
-{#if $settingsMenuOpen}
-	<SettingsMenu />
-{/if}
 
 <GithubIcon href="https://github.com/EmNudge/Abstract-Equality-Guide" />
 
 <header>
 	<div>
 		<Inputs />
-		<SettingsButton />
 	</div>
 
 	<StartStopButtons />
