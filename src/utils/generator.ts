@@ -4,7 +4,7 @@ export const emptyGenerator: Generator<any, any, any> = gen();
 
 // utility function to hold last value of a generator
 export function keepLast<T, U, V>(iter: Generator<T, U, V>): Generator<T, U, V> {
-  let lastValue: IteratorResult<T, U> = null;
+  let lastValue: IteratorResult<T, U>;
 
   const newIter = {
     next(value: V) {

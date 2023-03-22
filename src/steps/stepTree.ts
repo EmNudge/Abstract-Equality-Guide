@@ -129,7 +129,7 @@ export const stepTree: Step[] = [
 
 // https://www.ecma-international.org/ecma-262/11.0/index.html#sec-toprimitive
 
-const isCallable = (obj: object, prop: any) => typeof obj[prop] === 'function';
+const isCallable = <T extends Record<string, unknown>>(obj: T, prop: keyof T) => typeof obj[prop] === 'function';
 
 const isPrimitive = (val: any) =>
   val === null || !['object', 'function'].includes(typeof val);

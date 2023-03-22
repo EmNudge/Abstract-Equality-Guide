@@ -2,7 +2,7 @@ import { stepTree } from './stepTree';
 import type { Step } from './stepTree'
 import { keepLast } from '../utils';
 
-export function* getSteps(steps: Iterable<Step> | Step[], x: any, y: any, stepArr = []): Generator<Event, boolean | Error> {
+export function* getSteps(steps: Iterable<Step> | Step[], x: any, y: any, stepArr: number[] = []): Generator<Event, boolean | Error> {
   let i = 0;
 
   for (const step of steps) {

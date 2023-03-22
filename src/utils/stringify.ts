@@ -7,7 +7,7 @@ const typeMappings: Map<string, (val: any) => string> = new Map([
   ['undefined', (_val: any) => 'undefined'], 
 ]);
 
-export function stringify(val: any): string {
+export function stringify(val: unknown): string {
   const type = typeof val;
   for (const [currType, func] of typeMappings) {
     if (type !== currType) continue;
@@ -17,9 +17,9 @@ export function stringify(val: any): string {
   // NaN is serialized as null using JSON.stringify
   if (Number.isNaN(val)) return 'NaN';
 
-  let str: string = null;
+  let str: string;
   try {
-    str = JSON.stringify(val);
+    str = String(JSON.stringify(val));
   } catch(e) {
     str = 'UNSERIALIZABLE';
   }
