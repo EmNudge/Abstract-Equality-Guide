@@ -85,3 +85,9 @@ export const stepIter: Readable<Generator<EqStep, boolean, never>> = derived(
     return getSteps(stepTree, x, y);
   }
 );
+
+export const clearStepperState = () => {
+  events.set([]);
+  iterTrigger.set(Symbol());
+  stepArr.set([]);
+};

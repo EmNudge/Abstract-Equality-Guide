@@ -2,13 +2,17 @@
   import ExprInput from './ExprInput.svelte';
   import { 
     xValue, yValue, xText, yText, 
-    iterIsExhausted, stepIter, lastEvent 
+    iterIsExhausted, stepIter, lastEvent, clearStepperState
   } from '../../stores';
+	import { onDestroy } from 'svelte';
 
   function handleSubmit() {
     if ($iterIsExhausted) return;
-    $lastEvent = $stepIter.next()
+    $lastEvent = $stepIter.next();
   }
+
+  onDestroy(xText.subscribe(clearStepperState));
+  onDestroy(yText.subscribe(clearStepperState));
 </script>
 
 <form class="inputs" on:submit|preventDefault={handleSubmit}>
