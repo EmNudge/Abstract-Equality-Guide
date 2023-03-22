@@ -16,7 +16,7 @@ export type EqEvent = EqStep | boolean | Error | string;
 export const iterIsExhausted: Writable<boolean> = writable(true);
 
 export const events: Writable<EqEvent[]> = writable([]);
-export const lastEvent: Writable<IteratorResult<EqStep, boolean>> = writable(null);
+export const lastEvent: Writable<IteratorResult<EqStep, boolean> | null> = writable(null);
 lastEvent.subscribe(event => {
   if (!event || event.value == null) {
     iterIsExhausted.set(true);
@@ -76,7 +76,7 @@ export const iterTrigger: Writable<any> = writable(null);
 export const stepIter: Readable<Generator<EqStep, boolean, never>> = derived(
   [xValue, yValue, iterTrigger], 
   ([x, y]) => {
-    if ([empty, document.all].some(type => [x, y].includes(type))) {
+    if ([empty, 'document' in globalThis ? document.all : undefined].some(type => [x, y].includes(type))) {
       iterIsExhausted.set(true);
       return emptyGenerator;
     }

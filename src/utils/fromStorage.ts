@@ -4,6 +4,8 @@ import type { Writable } from 'svelte/store';
 // should only be a serializable value. 
 // One with toJSON() and one that can be parsed back
 export function writableFromStorage<T>(startingValue: T, name: string): Writable<T> {
+  if (!('localStorage' in globalThis)) return writable(startingValue);
+
   const item = localStorage.getItem(name);
   const startVal = item ? JSON.parse(item) : startingValue;
   

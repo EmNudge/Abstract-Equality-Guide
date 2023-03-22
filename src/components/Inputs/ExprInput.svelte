@@ -8,7 +8,7 @@
   $: errText = getErrText(value);
   
   function getErrText(value: any) {
-    if (value === document.all) {
+    if ('document' in globalThis && value === document.all) {
       return 'please don\'t put that there ☹';
     }
     if (text.length && value === empty) {

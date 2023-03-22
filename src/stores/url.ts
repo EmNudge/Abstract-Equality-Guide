@@ -14,6 +14,7 @@ export const urlFragment: Readable<string> = derived(
 
 let hashChecked = false;
 function checkHashForData() {
+  if (!('window' in globalThis)) return;
   const hash = window.location.hash.slice(1);
   hashChecked = true;
 
