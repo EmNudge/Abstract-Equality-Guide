@@ -92,3 +92,10 @@ code var {
 code var:hover {
 	text-decoration: underline;
 }
+
+@media (prefers-color-scheme: dark) {
+    body {
+        filter: invert(1) hue-rotate(247deg);
+        background-color: #1a1a1a;
+    }
+}
